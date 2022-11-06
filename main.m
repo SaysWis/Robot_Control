@@ -10,13 +10,13 @@ N = length(time)-1;
 % For Plant
 x0 = [0;0];    % Position, Velocity
 x(:,1) = x0;
-a = normpdf(time,50,20); % Acceleration Profile
 
 % For Kalman Filter
-sigma_a = 0.1;
+sigma_a = 1;
+sigma_y = 0.3;
 mu=0;
 x_hat(:,1) = x0;
-P_k{1} = 100*eye(2,2);
+P_k{1} = 0*eye(2,2);
 P_k_norm(1) = norm(P_k{1});
 
 % Velocity Profile
@@ -26,7 +26,7 @@ Velocity(100:300) = 1.2;
 Velocity(300:500) = 1;
 Velocity(500:700) = 0;
 Velocity(700:800) = 0.7;
-Velocity(800:1000) = 0;
+Velocity(800:1001) = 0;
 
 %% Plant Model
 F = [1 Ts; 0 1];
@@ -43,32 +43,31 @@ if(rank(obsv(F,H))==2)
 end
 
 %% PID Controller
-Kp = 0.33; %7.49220278328499
-Ki = 0.01;
+Kp = 0.6; %7.49220278328499
+Ki = 0.002;
 
 %% Velocity Estimate using Kalman Filter
-Q = sigma_a^2;
-R = 0.1;
-noise = sigma_a*randn(1,N)+mu; % Generate White Noise
-noise(1:20)=0;
+Q = G*G'*sigma_a^2;
+R = sigma_y^2;
+noise = sigma_y*randn(1,N+1)+mu; % Generate White Noise
 
-Error = zeros(1,length(N));
-Prop = zeros(1,length(N));
-Integral = zeros(1,length(N));
+Error = zeros(1,length(N+1));
+Prop = zeros(1,length(N+1));
+Integral = zeros(1,length(N+1));
 
 for t=1:N
     % PID Controller
-    Error(N+1) = Velocity(t)-x_hat(2,t);
+    Error(t+1) = Velocity(t)-x_hat(2,t);
     
-    Prop(N+1) = Error(N+1);
-    Int(N+1)=(Error(N+1) + Error(N))*Ts/2;
-    Integral(N+1)= sum(Int); 
+    Prop(t+1) = Error(t+1);
+    Int(t+1)=Error(t+1)*Ts;
+    Integral(t+1)= sum(Int);
     
-    a(t) = Kp*Prop(N+1)+ Ki*Integral(N+1);
+    a(t+1) = Kp*Prop(t+1)+ Ki*Integral(t+1);
 
     % Plant Open Loop Simulation
-    x(:,t+1) = F*x(:,t) + G*a(t);
-    y(t) = H*x(:,t)+ noise(t); % Add noise to the measurement   
+    x(:,t+1) = F*x(:,t) + G*a(t+1);
+    y(t+1) = H*x(:,t+1)+ noise(t+1); % Add noise to the measurement   
     
     % Estimate the Velocity using Kalman Filter
     [x_up, P_k{t+1}] = Kalman_Filter(x_hat(:,t), P_k{t}, y(t), F, H, Q, R);
@@ -78,7 +77,7 @@ end
 %% Plot Data
 maxfig
 subplot(2,1,1)
-plot(time,x(1,:),'-',time,x_hat(1,:),'--',time,[0 y],'--','Linewidth',2)
+plot(time,x(1,:),'-',time,x_hat(1,:),'--',time, y,'--','Linewidth',2)
 xlabel('Time (s)','fontweight','bold')
 ylabel('Distance (m)','fontweight','bold')
 grid on
@@ -91,7 +90,7 @@ plot(time(your_index),x(1,your_index),time(your_index),x_hat(1,your_index),time(
 axis tight
 
 subplot(2,1,2)
-plot(time,x(1,:)-x_hat(1,:),time,x_hat(1,:)-[0 y],'Linewidth',1.5)
+plot(time,x(1,:)-x_hat(1,:),time,x_hat(1,:)-y,'Linewidth',1.5)
 legend('True Position','Measurement','Location','northwest')
 xlabel('Time (s)','fontweight','bold')
 ylabel('Distance (m)','fontweight','bold')
@@ -101,14 +100,14 @@ saveas(gcf,'Position.png')
 
 maxfig
 subplot(2,1,1)
-plot(time,[0 Velocity],time,x(2,:),time,x_hat(2,:),'Linewidth',2)
+plot(time,Velocity,time,x(2,:),time,x_hat(2,:),'Linewidth',2)
 xlabel('Time (s)','fontweight','bold')
 ylabel('Velocity (m/s)','fontweight','bold')
 legend('Velocity Profile','True Velocity','Estimated Velocity','Location','northeast')
 grid on
 title('Estimated vs Real Velocity ', 'FontSize', 14)
 subplot(2,1,2)
-plot(time,[0 Velocity]-x(2,:),'Linewidth',1.5)
+plot(time,Velocity-x(2,:),'Linewidth',1.5)
 xlabel('Time (s)','fontweight','bold')
 ylabel('Velocity (m/s)','fontweight','bold')
 grid on
