@@ -44,8 +44,9 @@ end
 
 %% PID Controller
 Kp = 0.8;
-Ki = 0.001;
+Ki = 1e-3;
 
+[Kp,Ki]= mydialog;
 %% Velocity Estimate using Kalman Filter
 Q = G*G'*sigma_a^2;
 R = sigma_y^2;
