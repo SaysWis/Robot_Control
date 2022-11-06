@@ -12,8 +12,8 @@ x0 = [0;0];    % Position, Velocity
 x(:,1) = x0;
 
 % For Kalman Filter
-sigma_a = 1;
-sigma_y = 0.3;
+sigma_a = 0.1;
+sigma_y = 0.01;
 mu=0;
 x_hat(:,1) = x0;
 P_k{1} = 0*eye(2,2);
@@ -43,8 +43,8 @@ if(rank(obsv(F,H))==2)
 end
 
 %% PID Controller
-Kp = 0.6; %7.49220278328499
-Ki = 0.002;
+Kp = 0.8;
+Ki = 0.001;
 
 %% Velocity Estimate using Kalman Filter
 Q = G*G'*sigma_a^2;
