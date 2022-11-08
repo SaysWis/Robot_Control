@@ -1,4 +1,4 @@
-# LinkedIn_Post
+# Robot Control using PID Controller and Kalman Filter
 The objective is to estimate the Velocity using a Linear Kalman Filter and to control a robot using a PID Controller.
 
 Consider a robot on frictionless, straight rails. Initially, the truck is stationary at position 0, but it is buffeted this way and that by random uncontrolled forces. We measure the position of the robot every Δt seconds, but these measurements are imprecise; we want to maintain a model of the robot's position and velocity. 
@@ -17,3 +17,5 @@ F = [1 Δt;0 1]
 G = [Δt^2/2;Δt]
 
 Then, a PID controller is used to generates the acceleration to control the robot's position using the estimated velocity.
+
+![alt text](https://https://github.com/SaysWis/Robot_Control/blob/main/Control_scheme.png)
