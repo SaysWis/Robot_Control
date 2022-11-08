@@ -18,4 +18,7 @@ G = [Δt^2/2;Δt]
 
 Then, a PID controller is used to generates the acceleration to control the robot's position using the estimated velocity.
 
-![alt text](https://https://github.com/SaysWis/Robot_Control/blob/main/Control_scheme.png)
+<p align="center">
+  <img src="https://github.com/SaysWis/Robot_Control/blob/main/Control_scheme.png">
+</p>
+
