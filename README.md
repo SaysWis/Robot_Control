@@ -14,7 +14,7 @@ We assume that between the ( $k − 1$ ) and ( $k$ ) timestep, uncontrolled forc
 $$x(k) = F x(k-1) + G a(k)$$
 
 We suppose there is no control inputs $G a(k)$ term, where
-$$F = [1 Δt;0 1]$$
+$$F = [1 \quad Δt;0 \quad 1]$$
 $$G = [Δt^2/2;Δt]$$
 
 
