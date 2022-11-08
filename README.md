@@ -23,3 +23,12 @@ Then, a PID controller is used to generates the acceleration ( $a$ ) to control 
 <p align="center">
   <img src="https://github.com/SaysWis/Robot_Control/blob/main/Control_scheme.png">
 </p>
+
+
+```
+To try this example ...
+1. Run the main.m file
+2. A pop-up message will appear
+3. Choose your tuning PID Controller parameter (by default Kp = 0.8 and Ki = 0.001)
+4. That's it !
+```
