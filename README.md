@@ -10,7 +10,7 @@ The position and velocity of the robot are described by the linear state space
 $x_k$ = [ $x$ , $v$ ]     % $x$ : position
                           ; $v$ : velocity
 
-We assume that a(k) is unknown and normally distributed with mean 0 and standard deviation $sigma_a$. From Newton's laws of motion we conclude that
+We assume that a(k) is unknown and normally distributed with mean 0 and standard deviation $\sigma_a$. From Newton's laws of motion we conclude that
 $$x(k) = F x(k-1) + G a(k)$$
 
 We suppose there is no control inputs $G a(k)$ term, where
