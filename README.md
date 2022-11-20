@@ -1,7 +1,7 @@
 # Robot Control using PID Controller and Kalman Filter
 The objective is to estimate the Velocity using a Linear Kalman Filter and to control a robot using a PID Controller.
 
-Consider a robot on frictionless, straight rails. Initially, the robot is stationary at position 0. We measure the position of the robot every $\Delta t$ seconds, but these measurements are imprecise; we want to maintain a model of the robot's position and velocity. 
+Consider a robot on frictionless, straight lane. Initially, the robot is stationary at position 0. We measure the position of the robot every $\Delta t$ seconds, but these measurements are imprecise; we want to maintain a model of the robot's position and velocity. 
 
 We show here how we derive the model from which we create our Kalman filter.
 Since $F$, $H$ , $R$ and $Q$ are constant, their time indices are dropped.
